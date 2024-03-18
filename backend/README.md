@@ -35,15 +35,20 @@ pip install djangorestframework
 
 ### Database design
 User[id, username, first_name, last_name, email, password, is_staff, is_active, is_superuser]
-# one to many: 1 user can add many products
+
+one to many: 1 user can add many products
 Product[id, user, productName, image, brand, category, desscription, rating, numReviews, price, countInStock, createdAt]
-# one to many: 1 user can add review on many products
+
+one to many: 1 user can add review on many products
 Review[id, user, product, name, rating, comment, createdAt]
-# one to many: 1 user can add many orders, each order can have multiple items
+
+one to many: 1 user can add many orders, each order can have multiple items
 Order[id, user, paymentMethod, taxPrice, shippingPrice, totalPrice, isPaid, paidAt, isDelivered, deliveredAt, createAt]
-# one to many: 1 order can have many order items from the cart
+
+one to many: 1 order can have many order items from the cart
 OrderItem[id, order, product, name, qty, price, image]
-# one to one: 1 order can have 1 shipping address associated with it
+
+one to one: 1 order can have 1 shipping address associated with it
 ShippingAddress[id, order, address,city, postalCode, country, shippingPrice]
 
 ### Setup Admin
