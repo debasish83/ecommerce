@@ -10,11 +10,10 @@ from django.utils import timezone
 # 'countInStock': 10, 'rating': 4.5, 'numReviews': 12}
 
 class Command(BaseCommand):
-    help = "Command to print a text"
+    help = "Command to add bulk products in ecommerce"
 
     def handle(self, *args, **options):
         try:
-            print('Command is executed')
             user = User.objects.get(username='ecommerceadmin')
             userserializer = UserSerializer(user, many=False)
             print(userserializer.data)
