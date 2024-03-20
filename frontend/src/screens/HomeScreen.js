@@ -19,7 +19,7 @@ function HomeScreen() {
             setLoading(true)
             setError()
             try {
-                const { data } = await axios.get('/api/products/')
+                const { data } = await axios.get('http://localhost:8000/api/products/')
                 setProducts(data)
                 setLoading(false)
             } catch(err) {

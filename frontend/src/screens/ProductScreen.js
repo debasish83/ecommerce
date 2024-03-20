@@ -14,13 +14,14 @@ function ProductScreen() {
     const [loading, setLoading] = useState(true)
     const [error, setError] = useState()
 
+    //this logic need to move under hooks
     useEffect(() => {
         async function fetchProduct(id) {
             setLoading(true)
             setError()
 
             try {
-                const { data } = await axios.get(`/api/products/${id}`)
+                const { data } = await axios.get(`http://localhost:8000/api/products/${id}/`)
                 setProduct(data)
                 setLoading(false)
             } catch(err) {
