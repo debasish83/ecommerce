@@ -15,12 +15,18 @@ const reducer = combineReducers({
 const cartItemsFromStorage = localStorage.getItem('cartItems') && localStorage.getItem('cartItems') !== 'undefined'? 
     JSON.parse(localStorage.getItem('cartItems')) : []
 
-const userInfoFromStorage = localStorage.getItem('userInfo') && localStorage.getItem('cartItems') !== 'undefined'?
+const userInfoFromStorage = localStorage.getItem('userInfo') && localStorage.getItem('userInfo') !== 'undefined'?
     JSON.parse(localStorage.getItem('userInfo')) : null
 
+const shippingAddressFromStorage = localStorage.getItem('shippingAddress') && localStorage.getItem('shippingAddresss') !== 'undefined' ? 
+    JSON.parse(localStorage.getItem('shippingAddress')) : {};
+
 const initialState = {
-    cart: {cartItems: cartItemsFromStorage},
-    userLogin: {userInfo: userInfoFromStorage}
+    cart: {
+        cartItems: cartItemsFromStorage, 
+        shippingAddress: shippingAddressFromStorage
+    },
+    userLogin: {userInfo: userInfoFromStorage},
 }
 
 const middleware = [thunk]

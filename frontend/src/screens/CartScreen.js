@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react'
+import React, {useEffect} from 'react'
 import {Link, useLocation, useParams, useNavigate} from 'react-router-dom'
 import {Row, Col, ListGroup, Image, Form, Button, Card} from 'react-bootstrap'
 import { useDispatch, useSelector } from 'react-redux'
@@ -23,7 +23,7 @@ function CartScreen() {
             dispatch(addToCart(productId, qty))
         }
     }, [dispatch, productId, qty])
-    
+
     const removeFromCartHandler = (id) => {
         console.log(`remove ${id}`)
         dispatch(removeFromCart(id))
@@ -32,7 +32,7 @@ function CartScreen() {
     const checkoutHandler = () => {
         navigate('/login?redirect=shipping')
     }
-
+    
     const totalItems = cartItems.reduce((acc, item) => acc + item.qty * 1, 0)
     const totalPrice = cartItems.reduce((acc, item) => acc + item.qty * item.price, 0).toFixed(2)
 
