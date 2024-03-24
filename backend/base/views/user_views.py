@@ -8,6 +8,7 @@ from rest_framework_simplejwt.views import TokenObtainPairView
 from rest_framework_simplejwt.views import TokenRefreshView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
+from django.views.decorators.csrf import csrf_exempt
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -26,8 +27,9 @@ def getUsers(request):
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
-# updateUserProfile from postman not working due to csrf token issues
+#turned off csrf protection, need to understand more to update it
 @api_view(['PUT'])
+@csrf_exempt
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
     print(request.user)

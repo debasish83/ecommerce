@@ -1,4 +1,6 @@
 import axios from 'axios'
+import Cookies from 'js-cookie'
+
 import {
     USER_LOGIN_REQUEST,
     USER_LOGIN_SUCCESS,
@@ -148,13 +150,15 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
             userLogin: {userInfo}
         } = getState()
 
+        //TODO: Figure Out CORS protection
         const config = {
             headers: {
                 'Content-type': 'application/json',
-                Authorization: `Bearer ${userInfo.token}`
+                Authorization: `Bearer ${userInfo.token}`,
             }
         }
-        
+
+        console.log(user)
         console.log(config)
 
         const {data} = await axios.put(
