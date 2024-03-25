@@ -9,7 +9,7 @@ function CartScreen() {
     const navigate = useNavigate()
     const productId = useParams()['id']
     const qtyUrl = useLocation().search
-    const qty = qtyUrl ? qtyUrl.split('=')[1] : 1
+    const qty = qtyUrl ? Number(qtyUrl.split('=')[1]) : 1
     console.log(`productId ${productId}`)
     console.log(`qty ${qty}`)
 
