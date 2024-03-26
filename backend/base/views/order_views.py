@@ -6,6 +6,7 @@ from base.models import Product, Order, OrderItem, ShippingAddress
 from base.serializers import OrderSerializer
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
+from datetime import datetime
 
 @api_view(['POST'])
 @csrf_exempt
@@ -56,9 +57,6 @@ def addOrderItems(request):
 def getOrderById(request, pk):
     user = request.user
     order = Order.objects.get(_id=pk)
-    print('getOrderById ' + pk)
-    print(user)
-    print(order)
     try:
         if user.is_staff or order.user == user:
             serializer = OrderSerializer(order, many=False)
@@ -70,3 +68,18 @@ def getOrderById(request, pk):
     except:
         return Response({'detail': 'Order does not exists'},
                         status=status.HTTP_400_BAD_REQUEST)
+
+@api_view(['PUT'])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def updateOrderToPaid(request, pk):
+    try:
+        order = Order.objects.get(_id=pk)
+        order.isPaid = True
+        order.paidAt = datetime.now()
+        order.save()
+        return Response('Order was paid')
+    except:
+        return Response({'detail': 'Order does not exists'}, 
+                        status=status.HTTP_400_BAD_REQUEST)
+

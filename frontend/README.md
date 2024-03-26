@@ -76,4 +76,9 @@ Redux pattern create actions that connect with server
 ### Context and Hooks
 We can use Hooks with useState and useEffect to update state in the component
 We can use Context to share state globally within components
-As the application become more complex we can use redux
+react-redux use hooks and context to build a global store to maintain the state of the application
+
+### Paypal integration
+react-paypal-button-v2 uses react 17 as dependency. For using with reacth 18 use the following
+
+npm install --legacy-peer-deps react-paypal-button-v2 --save
