@@ -78,7 +78,6 @@ export const getOrderDetails = (id) => async (dispatch, getState) => {
             `http://localhost:8000/api/orders/${id}/`,
             config
         )
-        
         dispatch({
             type: ORDER_DETAILS_SUCCESS,
             payload: data

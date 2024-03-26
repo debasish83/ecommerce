@@ -56,10 +56,13 @@ def addOrderItems(request):
 def getOrderById(request, pk):
     user = request.user
     order = Order.objects.get(_id=pk)
-    
+    print('getOrderById ' + pk)
+    print(user)
+    print(order)
     try:
         if user.is_staff or order.user == user:
             serializer = OrderSerializer(order, many=False)
+            print(serializer.data)
             return Response(serializer.data)
         else:
             Response({'detail': 'Not authorized to view this order'}, 

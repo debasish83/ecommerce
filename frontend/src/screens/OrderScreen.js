@@ -1,12 +1,10 @@
-import React, {useState, useEffect} from 'react'
-import {Link, useNavigate, useLocation, useParams} from 'react-router-dom'
-import {Button, Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
+import React, {useEffect} from 'react'
+import {Link, useParams} from 'react-router-dom'
+import {Row, Col, ListGroup, Image, Card } from 'react-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { useDispatch, useSelector } from 'react-redux'
-import FormContainer from '../components/FormContainer'
-import {createOrder, getOrderDetails} from '../actions/orderActions'
-import { ORDER_CREATE_RESET } from '../constants/orderConstants'
+import {getOrderDetails} from '../actions/orderActions'
 
 function OrderScreen() {
     let {id} = useParams()
@@ -15,13 +13,16 @@ function OrderScreen() {
 
     const orderDetails = useSelector(state => state.orderDetails)
     const {order, error, loading} = orderDetails
+
     if (!loading && !error) {
         order.itemsPrice = order.orderItems.reduce((acc, item) => acc + item.price*item.qty, 0).toFixed(2)
     }
 
     useEffect(() => {
-        if (!order || order._id !== id)
+        if (!order || order._id !== Number(id)) {
+            console.log('getOrderDetails')
             dispatch(getOrderDetails(id))
+        }
     }, [id, order, dispatch])
 
     return loading ? (
@@ -60,7 +61,7 @@ function OrderScreen() {
                         </Message> : (
                             <ListGroup variant='flush'>
                                 {order.orderItems.map((item, index) => (
-                                    <ListGroup.Item>
+                                    <ListGroup.Item key={index}>
                                         <Row>
                                             <Col md={1}>
                                                 <Image src={item.image} alt={item.name} fluid rounded />
