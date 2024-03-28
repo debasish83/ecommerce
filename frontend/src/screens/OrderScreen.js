@@ -27,7 +27,7 @@ function OrderScreen() {
 
     const addPayPalScript = () => {
         const script = document.createElement('script')
-        const clientId= 'AUXiUJi1sZyJ4HJuAyQuhdom013tjNn9S1X0TOFyRqNSBH0zVUqy74JWrISKmBY3Kp_PxSkv8ACbTsXE'
+        const clientId = 'AVViT8_LN6dE_NBJrb1V--I4JbRfBZmKksoH2pwuwVeBf5uTqBRLkZuSAa2iSXKWtbRnxMqLW0RSV486'
         script.type = 'text/javascript'
         script.src = `https://www.paypal.com/sdk/js?client-id=${clientId}`
         script.async = true

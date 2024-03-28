@@ -82,3 +82,6 @@ react-redux use hooks and context to build a global store to maintain the state 
 react-paypal-button-v2 uses react 17 as dependency. For using with reacth 18 use the following
 
 npm install --legacy-peer-deps react-paypal-button-v2 --save
+
+react-paypal-button-v2 with react 18 show the payment box twice. Use the official react hooks & context for paypal button
+https://www.npmjs.com/package/@paypal/react-paypal-js
