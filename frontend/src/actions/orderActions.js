@@ -151,7 +151,6 @@ export const listMyOrders = () => async (dispatch, getState) => {
             userLogin: {userInfo}
         } = getState()
 
-        //TODO: Figure Out CORS protection
         const config = {
             headers: {
                 'Content-type': 'application/json',
@@ -163,9 +162,6 @@ export const listMyOrders = () => async (dispatch, getState) => {
             `http://localhost:8000/api/orders/myorders/`,
             config
         )
-        console.log('listMyOrders')
-        console.log(JSON.stringify(config))
-        console.log(JSON.stringify(data))
         
         dispatch({
             type: ORDER_LIST_MY_SUCCESS,

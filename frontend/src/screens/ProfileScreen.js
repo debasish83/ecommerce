@@ -20,32 +20,19 @@ function ProfileScreen() {
 
     const userDetails = useSelector(state => state.userDetails)
     const {error, loading, user } = userDetails
-
+   
     const userLogin = useSelector(state => state.userLogin)
     const { userInfo } = userLogin
 
     const userUpdateProfile = useSelector(state => state.userUpdateProfile)
-    const { success, userInfo: userInfoUpdate } = userUpdateProfile
+    const { success } = userUpdateProfile
+
     const orderListMy = useSelector(state => state.orderListMy)
-    const { loading: loadingOrders, error: errorOrders, orders} = {orderListMy}
-
-    console.log('orderListMy')
-    console.log(loadingOrders)
-    console.log(errorOrders)
-    console.log(JSON.stringify(orders))
-
-    console.log('userUpdateProfile')
-    console.log(success)
-    console.log(JSON.stringify(userInfoUpdate))
+    //Beware ! {orderListMy} in place of orderListMy made loadingOrders, errorOders and orders undefined
+    //It did not generate any compile time errors
+    //Most likely react typescript can help catch these type issues
+    const { loading: loadingOrders, error: errorOrders, orders} = orderListMy
     
-    console.log('userLogin')
-    console.log(JSON.stringify(userInfo))
-
-    console.log('userDetails')
-    console.log(error)
-    console.log(loading)
-    console.log(JSON.stringify(user))
-
     useEffect(() => {
         if(!userInfo) {
             navigate('/login')
@@ -53,7 +40,6 @@ function ProfileScreen() {
             if (!user || !user.name || success) {
                 dispatch({type: USER_UPDATE_PROFILE_RESET})
                 dispatch(getUserDetails('profile'))
-                console.log('dispatch listMyOrders')
                 dispatch(listMyOrders())
             } else {
                 setName(user.name)
@@ -154,16 +140,16 @@ function ProfileScreen() {
                             </tr>
                         </thead>
                         <tbody>
-                            {/* {orders.map(order => (
+                            {orders.map(order => (
                                 <tr key={order._id}>
                                     <td>{order._id}</td>
-                                    <td>{order.createAt.subString(0, 10)}</td>
+                                    <td>{order.createdAt.substring(0, 10)}</td>
                                     <td>{order.totalPrice}</td>
                                     <td>{order.isPaid ? order.paidAt : (
                                        <i className='fas fa-times' style={{color: 'red'}}></i>
                                     )} </td>
                                 </tr>
-                            ))} */}
+                            ))}
                         </tbody>
                     </Table>
                 )}

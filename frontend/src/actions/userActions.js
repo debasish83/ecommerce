@@ -123,8 +123,6 @@ export const getUserDetails = (id) => async (dispatch, getState) => {
             }
         }
         
-        console.log(config)
-
         const {data} = await axios.get(
             `http://localhost:8000/api/users/${id}/`,
             config
@@ -161,10 +159,7 @@ export const updateUserProfile = (user) => async (dispatch, getState) => {
                 Authorization: `Bearer ${userInfo.token}`,
             }
         }
-
-        console.log(user)
-        console.log(config)
-
+        
         const {data} = await axios.put(
             `http://localhost:8000/api/users/profile/update/`,
             user,
