@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
-import {Link, useNavigate} from 'react-router-dom'
+import {useNavigate} from 'react-router-dom'
 import {Form, Button, Row, Col, Table } from 'react-bootstrap'
+import { LinkContainer } from 'react-router-bootstrap'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import { useDispatch, useSelector } from 'react-redux'
@@ -32,7 +33,7 @@ function ProfileScreen() {
     //It did not generate any compile time errors
     //Most likely react typescript can help catch these type issues
     const { loading: loadingOrders, error: errorOrders, orders} = orderListMy
-    
+
     useEffect(() => {
         if(!userInfo) {
             navigate('/login')
@@ -148,6 +149,11 @@ function ProfileScreen() {
                                     <td>{order.isPaid ? order.paidAt : (
                                        <i className='fas fa-times' style={{color: 'red'}}></i>
                                     )} </td>
+                                    <td>
+                                        <LinkContainer to={`/order/${order._id}`}>
+                                            <Button className='btn-sm'>Details</Button>
+                                        </LinkContainer>
+                                    </td>
                                 </tr>
                             ))}
                         </tbody>
