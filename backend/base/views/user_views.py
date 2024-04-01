@@ -9,6 +9,7 @@ from rest_framework_simplejwt.views import TokenRefreshView
 from django.contrib.auth.hashers import make_password
 from rest_framework import status
 from django.views.decorators.csrf import csrf_exempt
+import logging
 
 class MyTokenObtainPairView(TokenObtainPairView):
     serializer_class = MyTokenObtainPairSerializer
@@ -20,6 +21,7 @@ def getUserProfile(request):
     serializer = UserSerializer(user, many=False)
     return Response(serializer.data)
 
+# this particular view is admin only view and can be accessed by admin users only
 @api_view(['GET'])
 @permission_classes([IsAdminUser])
 def getUsers(request):
@@ -27,13 +29,51 @@ def getUsers(request):
     serializer = UserSerializer(users, many=True)
     return Response(serializer.data)
 
-#turned off csrf protection, need to understand more to update it
+# TODO: Add try catch for error handling if userId is not found
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getUserById(request, pk):
+    user = User.objects.get(id=pk)
+    serializer = UserSerializer(user, many=False)
+    return Response(serializer.data)
+
+# TODO: Add try catch for handling if userId is not found
+# TODO: turned off csrf protection, need to understand more to add it back
+@api_view(['DELETE'])
+@csrf_exempt
+@permission_classes([IsAdminUser])
+def deleteUser(request, pk):
+    print('delete userid ' + pk) 
+    userForDeletion = User.objects.get(id=pk)
+    userForDeletion.delete()
+    return Response('User was deleted')
+
+
+@api_view(['PUT'])
+@csrf_exempt
+@permission_classes([IsAuthenticated])
+def updateUser(request, pk):
+    user = User.objects.get(id=pk)
+    data = request.data
+    
+    user.first_name = data['name']
+    user.username = data['email']
+    user.email = data['email']
+    user.is_staff = data['admin']
+    
+    user.save()
+    serializer = UserSerializer(user, many=False)
+
+    return Response(serializer.data)
+
+
+#TODO: turned off csrf protection, need to understand more to add it back
 @api_view(['PUT'])
 @csrf_exempt
 @permission_classes([IsAuthenticated])
 def updateUserProfile(request):
-    print(request.user)
-    print(request.data)
+    logging.info(request.user)
+    logging.info(request.data)
     
     user = request.user
     serializer = UserSerializerWithToken(user, many=False)
@@ -42,7 +82,7 @@ def updateUserProfile(request):
     user.username = data['email']
     user.email = data['email']
 
-    print(serializer.data)
+    logging.info(serializer.data)
 
     if data['password'] != '':
         user.password = make_password(data['password'])
