@@ -31,6 +31,7 @@ def createProduct(request):
         price=269.99,
         brand='samsung',
         countInStock=10,
+        numReviews=400,
         category='Electronics',
         description="The new Samsung Galaxy Tab A9+ 5G for your on-the-go family fun. Fast AT&T 5G* connectivity makes every experience feel smooth and easy while the bright, engaging 11-inch screen1 and quad Dolby Atmos®-powered speakers bring entertainment to life. Plus, pre-loaded Samsung Kids app provides a safe digital environment for your little ones to happily learn and play. Give your family a great, all-in-one Tab that meets their everyday needs at a great value price!")
     serializer = ProductSerializer(product, many=False)
