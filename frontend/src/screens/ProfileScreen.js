@@ -33,7 +33,7 @@ function ProfileScreen() {
     //It did not generate any compile time errors
     //Most likely react typescript can help catch these type issues
     const { loading: loadingOrders, error: errorOrders, orders} = orderListMy
-    
+
     useEffect(() => {
         if(!userInfo) {
             navigate('/login')
@@ -70,13 +70,13 @@ function ProfileScreen() {
                 {message && <Message variant='danger'>{message}</Message>}
                 {error && <Message variant='danger'>{error}</Message>}
                 {loading && <Loader />}
+
                 <Form onSubmit={submitHandler}>
-                    
                     <Form.Group controlId='name'>
                         <Form.Label>Name</Form.Label>
                         <Form.Control
                             required
-                            type='name'
+                            type='text'
                             placeholder='Enter name'
                             value={name}
                             onChange={(e) => setName(e.target.value)}

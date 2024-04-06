@@ -38,16 +38,17 @@ def createProduct(request):
     return Response(serializer.data)
 
 @api_view(['PUT'])
+@csrf_exempt
 @permission_classes([IsAdminUser])
 def updateProduct(request, pk):
     data = request.data
     product = Product.objects.get(_id=pk)
+    product.name = data['name']
+    product.price = data['price']
     product.brand = data['brand']
     product.countInStock = data['countInStock']
     product.description = data['description']
     product.category = data['category']
-    product.price = data['price']
-
     product.save()
 
     serializer = ProductSerializer(product, many=False)

@@ -301,7 +301,8 @@ export const updateUser = (user) => async (dispatch, getState) => {
         )
         
         dispatch({
-            type: USER_UPDATE_SUCCESS
+            type: USER_UPDATE_SUCCESS,
+            payload: data
         })
 
         dispatch({

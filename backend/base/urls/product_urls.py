@@ -11,6 +11,6 @@ urlpatterns = [
     # delete the lawyer profile
     # read the lawyer profile
     
-    path('update/<str:pk>/', views.createProduct, name='product-create'),
+    path('update/<str:pk>/', views.updateProduct, name='product-update'),
     path('delete/<str:pk>/', views.deleteProduct, name='product-delete'),
 ]
