@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import {Form, Button,} from 'react-bootstrap'
+import {Form, Button} from 'react-bootstrap'
 import {Link, useParams} from 'react-router-dom'
 import {useNavigate} from 'react-router-dom'
 import Loader from '../components/Loader'
@@ -8,6 +8,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import FormContainer from '../components/FormContainer'
 import {listProductDetails, updateProduct} from '../actions/productActions'
 import {PRODUCT_UPDATE_RESET} from '../constants/productConstants'
+import axios from 'axios'
 
 function ProductEditScreen() {
     const productId = useParams()['id']
@@ -21,6 +22,10 @@ function ProductEditScreen() {
     const [category, setCategory] = useState('')
     const [countInStock, setCountInStock] = useState('')
     const [description, setDescription] = useState('')
+    const [uploading, setUploading] = useState(false)
+
+    const userLogin = useSelector(state => state.userLogin)
+    const {userInfo} = userLogin
 
     const productDetails = useSelector(state => state.productDetails)
     const {error, loading, product} = productDetails
@@ -30,7 +35,7 @@ function ProductEditScreen() {
 
     console.log('product details')
     console.log(JSON.stringify(product))
-    
+
     useEffect(() => {
         if(successUpdate) {
             dispatch({type:PRODUCT_UPDATE_RESET})
@@ -62,6 +67,32 @@ function ProductEditScreen() {
             countInStock,
             description
         }))
+    }
+
+    const uploadFileHandler = async (event) => {
+        const file = event.target.files[0];
+        const formData = new FormData()
+        formData.append('image', file)
+        formData.append('product_id', productId)
+        setUploading(true)
+        console.log('Selected file:', file);
+        try {
+            const config = {
+                headers: {
+                    'Content-type': 'multipart/form-data',
+                    Authorization: `Bearer ${userInfo.token}`
+                }
+            }
+
+            const {data} = await axios.post('http://localhost:8000/api/products/upload/',formData, config)
+            // You can do further processing with the selected file here
+            // we can use files to upload images, pdf and other documents like audio, video and other inputs
+            // captured by our senses - see, taste, smell, hear,  
+            setImage(data)
+            setUploading(false)
+        } catch (error) {
+            setUploading(false)
+        }
     }
 
     return (
@@ -101,17 +132,11 @@ function ProductEditScreen() {
                         >
                         </Form.Control>
                     </Form.Group>
-
-                    <Form.Group controlId='image'>
-                        <Form.Label>Image</Form.Label>
-                        <Form.Control
-                            required
-                            type='text'
-                            placeholder='Enter image'
-                            value={image}
-                            onChange={(e) => setImage(e.target.value)}
-                        >
-                        </Form.Control>
+                    
+                    <Form.Group controlId="formFile">
+                    <Form.Label>Image</Form.Label>
+                    <Form.Control type="file" onChange={uploadFileHandler} />
+                    {uploading && <Loader />}
                     </Form.Group>
 
                     <Form.Group controlId='brand'>

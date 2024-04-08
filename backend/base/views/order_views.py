@@ -83,10 +83,31 @@ def updateOrderToPaid(request, pk):
         return Response({'detail': 'Order does not exists'}, 
                         status=status.HTTP_400_BAD_REQUEST)
 
+
+@api_view(['PUT'])
+@csrf_exempt
+@permission_classes([IsAdminUser])
+def updateOrderToDelivered(request, pk):
+    order = Order.objects.get(_id=pk)
+    order.isDelivered = True
+    order.deliveredAt = datetime.now()
+    order.save()
+    # integrate a logistic provider to deliver the order     
+    return Response('Order was delivered')
+
+
 @api_view(['GET'])
 @permission_classes([IsAuthenticated])
 def getMyOrders(request):
     user = request.user
     orders = user.order_set.all()
+    serializer = OrderSerializer(orders, many=True)
+    return Response(serializer.data)
+
+@api_view(['GET'])
+@permission_classes([IsAdminUser])
+def getOrders(request):
+    user = request.user
+    orders = Order.objects.all()
     serializer = OrderSerializer(orders, many=True)
     return Response(serializer.data)
