@@ -5,6 +5,7 @@ urlpatterns = [
     path('', views.getProducts, name="products"),
     path('create/', views.createProduct, name='product-create'),
     path('upload/', views.uploadImage, name='product-upload'),
+    path('<str:pk>/reviews/', views.createProductReview, name='product-review'),
     path('<str:pk>/', views.getProduct, name="product"),
     # crud operations
     # create a lawyer with law firm if applicable
