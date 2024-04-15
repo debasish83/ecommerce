@@ -1,36 +1,45 @@
 import React, {useState, useEffect} from 'react';
 import {Row, Col} from 'react-bootstrap'
 import Product from '../components/Product'
-import axios from 'axios'
 import Loader from '../components/Loader';
 import Message from '../components/Message';
+import { useLocation } from 'react-router-dom';
+import { listProducts } from '../actions/productActions';
+import { useSelector, useDispatch } from 'react-redux';
 
 function HomeScreen() {
-    const [products, setProducts] = useState([])
-    const [loading, setLoading] = useState(true)
-    const [error, setError] = useState()
+    const productList = useSelector(state => state.productList)
+    const {error, loading, products} = productList
 
+    const location = useLocation()
+    const dispatch = useDispatch()
+
+    //each time keyword is changed the API will be re-triggered since
+    //we added it in the dependencies of useEffect
+    let keyword = location.search
+        
     //the API calls for fetchProducts are inside HomeScreen component
     //We may need to share the product list with rest of the application
     //Use Context and Hooks to share the list with rest of the application
     //this logic need to move under hooks
     useEffect(() => {
-        async function fetchProducts() {
-            setLoading(true)
-            setError()
-            try {
-                const { data } = await axios.get('http://localhost:8000/api/products/')
-                setProducts(data)
-                setLoading(false)
-            } catch(err) {
-                console.log(err)
-                setLoading(false)
-                //There is bug that when API fails we can't display error message
-                setError(err)
-            }
-        }
-        fetchProducts()
-    }, [])
+        dispatch(listProducts(keyword))
+        // async function fetchProducts() {
+        //     setLoading(true)
+        //     setError()
+        //     try {
+        //         const { data } = await axios.get('http://localhost:8000/api/products/')
+        //         setProducts(data)
+        //         setLoading(false)
+        //     } catch(err) {
+        //         console.log(err)
+        //         setLoading(false)
+        //         //There is bug that when API fails we can't display error message
+        //         setError(err)
+        //     }
+        // }
+        // fetchProducts()
+    }, [dispatch, keyword])
 
     return (
         <div>

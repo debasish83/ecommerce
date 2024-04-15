@@ -10,8 +10,17 @@ from rest_framework import status
 
 @api_view(['GET'])
 def getProducts(request):
-    products = Product.objects.all()
+    query = request.query_params.get('keyword')
+    if query == None:
+        query = ''
+    
+    print('getProducts query: ' + query)
+    # name__icontains looks for query match in name
+    # i is case insensitive
+    products = Product.objects.filter(name__icontains=query)
     serializer = ProductSerializer(products, many=True)
+    print(serializer.data)
+    
     # we can't return queryset from ORM, we need to serialize it to a json response
     return Response(serializer.data)
 
@@ -83,7 +92,7 @@ def createProductReview(request, pk):
     #1 review already exist
     filteredReviews = product.review_set.filter(user=user).values('pk')
     alreadyExists = filteredReviews.exists()
-    
+
     if alreadyExists:
         content = {'detail': 'Product already revieweed'}
         return Response(content, status=status.HTTP_400_BAD_REQUEST)
