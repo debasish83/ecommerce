@@ -10,13 +10,13 @@ function SearchBox() {
     const submitHandler = (e) => {
         e.preventDefault()
         if (keyword) {
-            navigate(`/?keyword=${keyword}`)
+            navigate(`/keyword=${keyword}&page=1`)
         } else {
             navigate(location.pathname)
         }
         console.log(`search query ${keyword}`)
     }
-    
+
     return (
         <Form onSubmit={submitHandler} inline='true'>
             <Form.Control

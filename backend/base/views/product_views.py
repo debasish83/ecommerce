@@ -7,6 +7,7 @@ from rest_framework import status
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 from django.views.decorators.csrf import csrf_exempt
 from rest_framework import status
+from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 
 @api_view(['GET'])
 def getProducts(request):
@@ -18,11 +19,25 @@ def getProducts(request):
     # name__icontains looks for query match in name
     # i is case insensitive
     products = Product.objects.filter(name__icontains=query)
-    serializer = ProductSerializer(products, many=True)
-    print(serializer.data)
+
+    page = request.query_params.get('page')
+    paginator = Paginator(products, 2)
+
+    try:
+        products = paginator.page(page)
+    except PageNotAnInteger:
+        products = paginator.page(1)
+    except EmptyPage:
+        products = paginator.page(paginator.num_pages)
     
+    if page == None:
+        page = 1
+
+    page = int(page)
+    
+    serializer = ProductSerializer(products, many=True)
     # we can't return queryset from ORM, we need to serialize it to a json response
-    return Response(serializer.data)
+    return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
 # O(n) for loop can be improved to O(logn) & O(1)
 @api_view(['GET'])

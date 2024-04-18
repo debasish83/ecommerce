@@ -4,12 +4,12 @@ import Product from '../components/Product'
 import Loader from '../components/Loader';
 import Message from '../components/Message';
 import { useLocation } from 'react-router-dom';
+import Paginate from '../components/Paginate';
 import { listProducts } from '../actions/productActions';
 import { useSelector, useDispatch } from 'react-redux';
-
 function HomeScreen() {
     const productList = useSelector(state => state.productList)
-    const {error, loading, products} = productList
+    const {error, loading, products, page, pages} = productList
 
     const location = useLocation()
     const dispatch = useDispatch()
@@ -17,7 +17,7 @@ function HomeScreen() {
     //each time keyword is changed the API will be re-triggered since
     //we added it in the dependencies of useEffect
     let keyword = location.search
-        
+
     //the API calls for fetchProducts are inside HomeScreen component
     //We may need to share the product list with rest of the application
     //Use Context and Hooks to share the list with rest of the application
@@ -46,15 +46,17 @@ function HomeScreen() {
             <h1>Latest Products</h1>
             {loading ? <Loader />
                 : error ? <Message variant='danger'>{error.message}</Message>
-                    : (
-                    <Row>
-                        {products.map(product => (
-                            <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
-                                <Product product={product} />
-                            </Col>
-                        ))}
-                    </Row>
-                    )
+                    :
+                    <div>
+                        <Row>
+                            {products.map(product => (
+                                <Col key={product._id} sm={12} md={6} lg={4} xl={3}>
+                                    <Product product={product} />
+                                </Col>
+                            ))}
+                        </Row>
+                        <Paginate page={page} pages={pages} keyword={keyword} />
+                    </div>
             }
         </div>
     )
