@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux'
 import Loader from '../components/Loader'
 import Message from '../components/Message'
 import Paginate from '../components/Paginate'
-import {useNavigate} from 'react-router-dom'
+import {useNavigate, useLocation} from 'react-router-dom'
 import { listProducts, deleteProduct, createProduct } from '../actions/productActions'
 import { PRODUCT_CREATE_RESET } from '../constants/productConstants'
 
@@ -25,6 +25,8 @@ function ProductListScreen() {
     const userLogin = useSelector(state => state.userLogin)
     const {userInfo} = userLogin
 
+    let keyword = useLocation().search
+
     useEffect(() => {
         dispatch({type: PRODUCT_CREATE_RESET})
 
@@ -35,10 +37,10 @@ function ProductListScreen() {
             navigate(`/admin/product/${createdProduct._id}/edit`)
         }
         else {
-            dispatch(listProducts())
+            dispatch(listProducts(keyword))
         }
-    }, [dispatch, userInfo, navigate, createdProduct, successsCreate])
-
+    }, [dispatch, userInfo, navigate, createdProduct, successsCreate, keyword])
+    
     const deleteHandler = (id) => {
         // replace it with a bootstrap Modal
         if (window.confirm('Are you sure you want to delete this product ?')) {

@@ -1,26 +1,31 @@
 import React from 'react'
-import {Pagination, Nav} from 'react-bootstrap'
+import { Pagination } from 'react-bootstrap'
 import { LinkContainer } from 'react-router-bootstrap'
-import {Link} from 'react-router-dom'
-function Paginate({pages, page, keyword='', isAdmin = false}) {
+
+function Paginate({ pages, page, keyword = '', isAdmin = false }) {
     if (keyword) {
         keyword = keyword.split('?keyword=')[1].split('&')[0]
     }
-    console.log('Keyword: ', keyword)
+
+    console.log('Paginate page:' + page + ' pages: ' + pages)
+    // {!isAdmin ? '/' : '/admin/productlist/'}    
+    let pathname = !isAdmin ? '/' : '/admin/productlist/'
 
     return (pages > 1 && (
         <Pagination>
-            {[...Array(pages).keys().map((x) => (
-                <Nav.Link as={Link}
-                key={x+1}
-                to={!isAdmin ? `/?keyword=${keyword}&page=${x+1}` 
-                    : `/admin/productlist/?keyword=${keyword}&page=${x+1}`}
+            {[...Array(pages).keys()].map((x) => (
+                <LinkContainer
+                    key={x + 1}
+                    to={{pathname: `${pathname}`, 
+                    search: `keyword=${keyword}&page=${x + 1}`}}
                 >
-                    <Pagination.Item active={x+1 === page}>{x+1}</Pagination.Item>
-                </Nav.Link>
-            ))]}
+                    <Pagination.Item active={x + 1 === page}>{x + 1}</Pagination.Item>
+                </LinkContainer>
+            ))
+            }
         </Pagination>
-    ))
+    )
+    )
 }
 
 export default Paginate

@@ -29,7 +29,7 @@ function ProfileScreen() {
     const { success } = userUpdateProfile
 
     const orderListMy = useSelector(state => state.orderListMy)
-    //Beware ! {orderListMy} in place of orderListMy made loadingOrders, errorOders and orders undefined
+    //Beware ! {orderListMy} in place of orderListMy made loadingOrders, errorOrders and orders undefined
     //It did not generate any compile time errors
     //Most likely react typescript can help catch these type issues
     const { loading: loadingOrders, error: errorOrders, orders} = orderListMy
@@ -130,7 +130,7 @@ function ProfileScreen() {
                 ) : errorOrders ? (
                     <Message variant='danger'>{errorOrders}</Message>
                 ) : (
-                    <Table striped response className='table-sm'>
+                    <Table striped responsive className='table-sm'>
                         <thead>
                             <tr>
                                 <th>ID</th>
