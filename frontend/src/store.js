@@ -28,6 +28,7 @@ import {
     productCreateReducer,
     productUpdateReducer,
     productReviewCreateReducer,
+    productTopRatedReducer
 } from './reducers/productReducers'
 
 const reducer = combineReducers({
@@ -50,7 +51,8 @@ const reducer = combineReducers({
     productCreate: productCreateReducer,
     productDelete: productDeleteReducer,
     productUpdate: productUpdateReducer,
-    productReviewCreate: productReviewCreateReducer
+    productReviewCreate: productReviewCreateReducer,
+    productTopRated: productTopRatedReducer
 })
 
 const cartItemsFromStorage = localStorage.getItem('cartItems') && localStorage.getItem('cartItems') !== 'undefined'? 

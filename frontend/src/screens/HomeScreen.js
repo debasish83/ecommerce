@@ -7,6 +7,8 @@ import { useLocation } from 'react-router-dom';
 import Paginate from '../components/Paginate';
 import { listProducts } from '../actions/productActions';
 import { useSelector, useDispatch } from 'react-redux';
+import ProductCarousel from '../components/ProductCarousel';
+
 function HomeScreen() {
     const productList = useSelector(state => state.productList)
     const {error, loading, products, page, pages} = productList
@@ -43,6 +45,8 @@ function HomeScreen() {
 
     return (
         <div>
+            {!keyword && <ProductCarousel />}
+
             <h1>Latest Products</h1>
             {loading ? <Loader />
                 : error ? <Message variant='danger'>{error.message}</Message>

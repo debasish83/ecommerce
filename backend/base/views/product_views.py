@@ -39,6 +39,12 @@ def getProducts(request):
     # we can't return queryset from ORM, we need to serialize it to a json response
     return Response({'products': serializer.data, 'page': page, 'pages': paginator.num_pages})
 
+@api_view(['GET'])
+def getTopProducts(request):
+    products = Product.objects.filter(rating__gte=4).order_by('-rating')[0:5]
+    serializer = ProductSerializer(products, many=True)
+    return Response(serializer.data)
+
 # O(n) for loop can be improved to O(logn) & O(1)
 @api_view(['GET'])
 def getProduct(request, pk):
