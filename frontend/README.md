@@ -85,3 +85,7 @@ npm install --legacy-peer-deps react-paypal-button-v2 --save
 
 react-paypal-button-v2 with react 18 show the payment box twice. Use the official react hooks & context for paypal button
 https://www.npmjs.com/package/@paypal/react-paypal-js
+
+### Production build
+Use npm run build
+Copy the build folder in django app

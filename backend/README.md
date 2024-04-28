@@ -67,3 +67,14 @@ authentication is the process where we get customer to provide username/password
 
 With authorization we restrict customer to have say access to admin
 pages where admin can add products to the ecommerce website
+
+### serve react production build
+Use npm run build to generate the frontend production build
+Add it in frontend/build folder for deployment
+Update settings.py template folder and static assets folder frontend/build/static and frontend/build
+Serve index.html on the localhost:8000/ root path
+manifest.json, favicon.ico and logo are not loading since django can't access them
+
+Hacky solution:
+copy the assets in frontend/build/static and update index.html to access them from static folder
+https://stackoverflow.com/questions/59538755/how-do-i-get-django-to-load-my-favicon-from-my-react-build-directory
